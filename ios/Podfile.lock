@@ -51,7 +51,7 @@ PODS:
   - "GoogleUtilities/NSData+zlib (7.11.1)"
   - GoogleUtilities/Reachability (7.11.1):
     - GoogleUtilities/Logger
-  - GTMSessionFetcher/Core (3.1.0)
+  - GTMSessionFetcher/Core (3.1.1)
   - health (1.0.4):
     - Flutter
   - location (0.0.1):
@@ -117,7 +117,7 @@ SPEC CHECKSUMS:
   google_maps_flutter_ios: 3e0b99383a8003b8169d06e7e324170bd0424105
   GoogleMaps: 032f676450ba0779bd8ce16840690915f84e57ac
   GoogleUtilities: 9aa0ad5a7bc171f8bae016300bfcfa3fb8425749
-  GTMSessionFetcher: c9e714f7eec91a55641e2bab9f45fd83a219b882
+  GTMSessionFetcher: e8647203b65cee28c5f73d0f473d096653945e72
   health: 5a380c0f6c4f619535845992993964293962e99e
   location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
   permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce

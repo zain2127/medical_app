@@ -5,7 +5,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:medical_app/Utils/Medicine_Card.dart';
 import 'package:medical_app/Views/Layout_Screens/medicine_details.dart';
+import 'package:medical_app/Views/Map_Screens/clinic_Screen.dart';
 import 'package:medical_app/Views/Map_Screens/hospital_screen.dart';
+import 'package:medical_app/Views/Map_Screens/pharmacy_Screen.dart';
 
 class PharmaPage extends StatefulWidget {
   const PharmaPage({Key? key}) : super(key: key);
@@ -77,35 +79,46 @@ class _PharmaPageState extends State<PharmaPage> {
       ),
                       Padding(
                     padding: const EdgeInsets.only(left: 16.0),
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                          color: Colors.orange[100],
-                          borderRadius: BorderRadius.circular(12)
-                      ),
-                      child: Row(
-                        children: const [
-                          Icon(FontAwesomeIcons.houseChimneyMedical,size: 25,),
-                          SizedBox(width: 15,),
-                          Text('Clinic',style: TextStyle(fontSize: 18),)
-                        ],
+                    child: InkWell(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>NearbyClinics()));
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                            color: Colors.orange[100],
+                            borderRadius: BorderRadius.circular(12)
+                        ),
+                        child: Row(
+                          children: const [
+                            Icon(FontAwesomeIcons.houseChimneyMedical,size: 25,),
+                            SizedBox(width: 15,),
+                            Text('Clinic',style: TextStyle(fontSize: 18),)
+                          ],
+                        ),
                       ),
                     ),
                   ),
                       Padding(
                     padding: const EdgeInsets.only(left: 16.0),
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                          color: Colors.orange[100],
-                          borderRadius: BorderRadius.circular(12)
-                      ),
-                      child: Row(
-                        children: const [
-                          Icon(FontAwesomeIcons.bandage,size: 25,),
-                          SizedBox(width: 15,),
-                          Text('Pharmacy',style: TextStyle(fontSize: 18),)
-                        ],
+                    child: InkWell(
+                      onTap: ()
+                      {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>NearbyPharmacy()));
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                            color: Colors.orange[100],
+                            borderRadius: BorderRadius.circular(12)
+                        ),
+                        child: Row(
+                          children: const [
+                            Icon(FontAwesomeIcons.bandage,size: 25,),
+                            SizedBox(width: 15,),
+                            Text('Pharmacy',style: TextStyle(fontSize: 18),)
+                          ],
+                        ),
                       ),
                     ),
                   ),
