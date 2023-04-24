@@ -6,49 +6,60 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class NearbyHospitals extends StatefulWidget {
+  const NearbyHospitals({super.key});
+
   @override
   _NearbyHospitalsState createState() => _NearbyHospitalsState();
 }
 
 class _NearbyHospitalsState extends State<NearbyHospitals> {
-  Completer<GoogleMapController> _controller = Completer();
-  Set<Marker> _markers = Set();
-  var _location = Location();
+  final Completer<GoogleMapController> _controller = Completer();
+  final Set<Marker> _markers = {};
+  final _location = Location();
   LocationData? _currentLocation;
   LatLng? currentLatLng;
+  late var future;
 
-
-  void _onMapCreated(GoogleMapController controller)async{
+  void _onMapCreated(GoogleMapController controller) async {
     _controller.complete(controller);
   }
 
- Future<LatLng?>_getCurrentLocation() async {
+  Future<LatLng?> _getCurrentLocation() async {
     try {
       var locationData = await _location.getLocation();
-      setState(() {
-        _currentLocation = locationData;
-        currentLatLng=LatLng(_currentLocation!.latitude!, _currentLocation!.longitude!);
-      });
-     await _getNearbyHospitals();
-     return currentLatLng!;
+
+      _currentLocation = locationData;
+      currentLatLng =
+          LatLng(_currentLocation!.latitude!, _currentLocation!.longitude!);
+      await _getNearbyHospitals();
+      return currentLatLng!;
     } catch (e) {
       print('Could not get location: $e');
       return null;
     }
   }
 
- Future<void> _getNearbyHospitals() async {
+  Future<void> _getNearbyHospitals() async {
     String url =
-        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${_currentLocation!.latitude},${_currentLocation!.longitude}&radius=2000&type=hospital&key=AIzaSyAywNYr7AK39rXkrhLtWU-xNGT-SQ4VAHc';
+        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${_currentLocation!.latitude},${_currentLocation!.longitude}&radius=2000&type=hospital&key=AIzaSyAqco1nAu3kgi5xOSS69My79r7EnR1lwFs';
     var response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);
       for (var place in jsonData['results']) {
-        String name = place['name'];
-        double lat = place['geometry']['location']['lat'];
-        double lng = place['geometry']['location']['lng'];
-        String address = place['hospital'];
-        setState(() {
+        String url =
+            'https://maps.googleapis.com/maps/api/place/details/json?place_id=${place["place_id"]}&key=AIzaSyAqco1nAu3kgi5xOSS69My79r7EnR1lwFs';
+        var res = await http.get(Uri.parse(url));
+        if (res.statusCode == 200) {
+          String name = place['name'];
+          double lat = place['geometry']['location']['lat'];
+          double lng = place['geometry']['location']['lng'];
+          var addressJsonData = json.decode(res.body);
+          String component = "";
+          for (var address in addressJsonData["result"]["address_components"]) {
+            component += address['long_name'];
+          }
+          String address = component;
+
           _markers.add(
             Marker(
               markerId: MarkerId(name),
@@ -56,7 +67,7 @@ class _NearbyHospitalsState extends State<NearbyHospitals> {
               infoWindow: InfoWindow(title: name, snippet: address),
             ),
           );
-        });
+        }
       }
     } else {
       print('Request failed with status: ${response.statusCode}.');
@@ -66,32 +77,32 @@ class _NearbyHospitalsState extends State<NearbyHospitals> {
   @override
   void initState() {
     super.initState();
-   // future=_getCurrentLocation();
+    future = _getCurrentLocation();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Nearby Hospitals'),
+        title: const Text('Nearby Hospitals'),
       ),
       body: FutureBuilder<LatLng?>(
-        future: _getCurrentLocation(),
-        builder: (context, snapshot) =>
-          (snapshot.connectionState==ConnectionState.done)?
-          (snapshot.hasData)?
-           GoogleMap(
-            onMapCreated: _onMapCreated,
-            initialCameraPosition: CameraPosition(
-              target: LatLng(_currentLocation!.latitude!,_currentLocation!.longitude! ),
-              zoom: 14,
-            ),
-            myLocationEnabled: true,
-            markers: _markers,
-          ):const  Text("Error while loading map")
-              :const Center(child: CircularProgressIndicator())
-
-      ),
+          future: future,
+          builder: (context, snapshot) =>
+              (snapshot.connectionState == ConnectionState.done)
+                  ? (snapshot.hasData)
+                      ? GoogleMap(
+                          onMapCreated: _onMapCreated,
+                          initialCameraPosition: CameraPosition(
+                            target: LatLng(_currentLocation!.latitude!,
+                                _currentLocation!.longitude!),
+                            zoom: 14,
+                          ),
+                          myLocationEnabled: true,
+                          markers: _markers,
+                        )
+                      : const Text("Error while loading map")
+                  : const Center(child: CircularProgressIndicator())),
     );
   }
 }

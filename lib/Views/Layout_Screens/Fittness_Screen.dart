@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:health/health.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -9,6 +8,7 @@ class FitnessScreen extends StatefulWidget {
   @override
   State<FitnessScreen> createState() => _FitnessScreenState();
 }
+
 enum AppState {
   DATA_NOT_FETCHED,
   FETCHING_DATA,
@@ -47,7 +47,7 @@ class _FitnessScreenState extends State<FitnessScreen> {
 
     // Check if we have permission
     bool? hasPermissions =
-    await health.hasPermissions(types, permissions: permissions);
+        await health.hasPermissions(types, permissions: permissions);
 
     // hasPermissions = false because the hasPermission cannot disclose if WRITE access exists.
     // Hence, we have to request with WRITE as well.
@@ -57,11 +57,11 @@ class _FitnessScreenState extends State<FitnessScreen> {
     if (!hasPermissions) {
       // requesting access to the data types before reading them
       authorized =
-      await health.requestAuthorization(types, permissions: permissions);
+          await health.requestAuthorization(types, permissions: permissions);
     }
 
     setState(() => _state =
-    (authorized) ? AppState.AUTHORIZED : AppState.AUTH_NOT_GRANTED);
+        (authorized) ? AppState.AUTHORIZED : AppState.AUTH_NOT_GRANTED);
   }
 
   /// Fetch data points from the health plugin and show them in the app.
@@ -78,7 +78,7 @@ class _FitnessScreenState extends State<FitnessScreen> {
     try {
       // fetch health data
       List<HealthDataPoint> healthData =
-      await health.getHealthDataFromTypes(yesterday, now, types);
+          await health.getHealthDataFromTypes(yesterday, now, types);
       // save all the new data points (only the first 100)
       _healthDataList.addAll(
           (healthData.length < 100) ? healthData : healthData.sublist(0, 100));
@@ -90,7 +90,9 @@ class _FitnessScreenState extends State<FitnessScreen> {
     _healthDataList = HealthFactory.removeDuplicates(_healthDataList);
 
     // print the results
-    _healthDataList.forEach((x) => print(x));
+    for (var x in _healthDataList) {
+      print(x);
+    }
 
     // update the UI to display the results
     setState(() {
@@ -112,25 +114,25 @@ class _FitnessScreenState extends State<FitnessScreen> {
     success &= await health.writeHealthData(
         1.925, HealthDataType.HEIGHT, earlier, now);
     success &=
-    await health.writeHealthData(90, HealthDataType.WEIGHT, earlier, now);
+        await health.writeHealthData(90, HealthDataType.WEIGHT, earlier, now);
     success &= await health.writeHealthData(
         90, HealthDataType.HEART_RATE, earlier, now);
     success &=
-    await health.writeHealthData(90, HealthDataType.STEPS, earlier, now);
+        await health.writeHealthData(90, HealthDataType.STEPS, earlier, now);
     success &= await health.writeHealthData(
         200, HealthDataType.ACTIVE_ENERGY_BURNED, earlier, now);
     success &= await health.writeHealthData(
         70, HealthDataType.HEART_RATE, earlier, now);
     success &= await health.writeHealthData(
         37, HealthDataType.BODY_TEMPERATURE, earlier, now);
-    success &= await health.writeHealthData(
-        98, HealthDataType.BLOOD_OXYGEN, earlier, now);
+    // success &= await health.writeHealthData(
+    //     98, HealthDataType.BLOOD_OXYGEN, earlier, now);
     success &= await health.writeHealthData(
         105, HealthDataType.BLOOD_GLUCOSE, earlier, now);
     success &= await health.writeHealthData(
         1100, HealthDataType.DISTANCE_DELTA, earlier, now);
     success &=
-    await health.writeHealthData(1.8, HealthDataType.WATER, earlier, now);
+        await health.writeHealthData(1.8, HealthDataType.WATER, earlier, now);
     success &= await health.writeWorkoutData(
         HealthWorkoutActivityType.AMERICAN_FOOTBALL,
         now.subtract(const Duration(minutes: 15)),
@@ -261,9 +263,9 @@ class _FitnessScreenState extends State<FitnessScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: const [
-         Text('Press the download button to fetch data.'),
-         Text('Press the plus button to insert some random data.'),
-         Text('Press the walking button to get total step count.'),
+        Text('Press the download button to fetch data.'),
+        Text('Press the plus button to insert some random data.'),
+        Text('Press the walking button to get total step count.'),
       ],
     );
   }
@@ -324,12 +326,12 @@ class _FitnessScreenState extends State<FitnessScreen> {
     }
   }
 
-  ShowAlertDialog(BuildContext context  , Widget content)
-  {
-
+  ShowAlertDialog(BuildContext context, Widget content) {
     Widget closeButton = TextButton(
       child: const Text("close"),
-      onPressed: () { Navigator.of(context,rootNavigator: true).pop(context);},
+      onPressed: () {
+        Navigator.of(context, rootNavigator: true).pop(context);
+      },
     );
     AlertDialog alert = AlertDialog(
       content: Center(child: content),
@@ -343,61 +345,61 @@ class _FitnessScreenState extends State<FitnessScreen> {
         context: context,
         builder: (BuildContext context) {
           return alert;
-        }
-    );
+        });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body:  Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GridView(
-          gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 4.0,
-            mainAxisSpacing: 4.0,
-            childAspectRatio:width / (height/4)
-          ),
+      appBar: AppBar(
+        title: const Text('Health Example'),
+      ),
+      body: Container(
+        child: Column(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: Colors.green[200]
-              ),
+            Wrap(
+              spacing: 10,
+              children: [
+                TextButton(
+                    onPressed: authorize,
+                    style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.blue)),
+                    child: const Text("Auth",
+                        style: TextStyle(color: Colors.white))),
+                TextButton(
+                    onPressed: fetchData,
+                    style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.blue)),
+                    child: const Text("Fetch Data",
+                        style: TextStyle(color: Colors.white))),
+                TextButton(
+                    onPressed: addData,
+                    style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.blue)),
+                    child: const Text("Add Data",
+                        style: TextStyle(color: Colors.white))),
+                TextButton(
+                    onPressed: deleteData,
+                    style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.blue)),
+                    child: const Text("Delete Data",
+                        style: TextStyle(color: Colors.white))),
+                TextButton(
+                    onPressed: fetchStepData,
+                    style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.blue)),
+                    child: const Text("Fetch Step Data",
+                        style: TextStyle(color: Colors.white))),
+                TextButton(
+                    onPressed: revokeAccess,
+                    style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.blue)),
+                    child: const Text("Revoke Access",
+                        style: TextStyle(color: Colors.white))),
+              ],
             ),
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color:Colors.green[300]
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
-                  Icon(FontAwesomeIcons.personWalking,color: Colors.white,size: 50,),
-                  Text('Steps',style: TextStyle(color: Colors.white,fontSize: 16),),
-                ],),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color:Colors.green[200]
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color:Colors.green[200]
-              ),
-            ),
-
+            const Divider(thickness: 3),
+            Expanded(child: Center(child: _content()))
           ],
         ),
       ),

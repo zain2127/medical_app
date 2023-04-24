@@ -41,7 +41,7 @@ dependencies:
   firebase_auth: ^4.3.0
   fluttertoast: ^8.2.1
   http: ^0.13.5
-  health: ^5.0.0
+  health: ^6.0.0
   permission_handler: ^10.2.0
   google_maps_flutter: ^2.2.5
   location: ^4.4.0
