@@ -17,7 +17,7 @@ class DoctorScreen extends StatefulWidget {
 
 class _DoctorScreenState extends State<DoctorScreen> {
   Future getDataFromApi() async {
-    const String baseUrl = 'https://medi-production-464c.up.railway.app/doctor/';
+    const String baseUrl = 'https://medi-production-d2ce.up.railway.app/doctor/';
 
     final response = await http.get(Uri.parse(baseUrl));
 
