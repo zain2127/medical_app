@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -14,9 +14,10 @@ class NearbyPharmacy extends StatefulWidget {
 
 class _NearbyPharmacyState extends State<NearbyPharmacy> {
   final Completer<GoogleMapController> _controller = Completer();
+  bool? _serviceEnabled;
   final Set<Marker> _markers = {};
-  final _location = Location();
-  LocationData? _currentLocation;
+
+  Position? _currentLocation;
   LatLng? currentLatLng;
   late var future;
 
@@ -26,8 +27,8 @@ class _NearbyPharmacyState extends State<NearbyPharmacy> {
 
   Future<LatLng?> _getCurrentLocation() async {
     try {
-      var locationData = await _location.getLocation();
-      _currentLocation = locationData;
+      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      _currentLocation = position;
       currentLatLng =
           LatLng(_currentLocation!.latitude!, _currentLocation!.longitude!);
       await _getNearbyHospitals();
@@ -83,7 +84,7 @@ class _NearbyPharmacyState extends State<NearbyPharmacy> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nearby Pharmacies'),
+        title: const Text('Nearby Pharmacy'),
       ),
       body: FutureBuilder<LatLng?>(
           future: future,

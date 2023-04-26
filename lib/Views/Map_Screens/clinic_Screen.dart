@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class NearbyClinics extends StatefulWidget {
-  const NearbyClinics({super.key});
+class NearbyClinic extends StatefulWidget {
+  const NearbyClinic({super.key});
 
   @override
-  _NearbyClinicsState createState() => _NearbyClinicsState();
+  _NearbyClinicState createState() => _NearbyClinicState();
 }
 
-class _NearbyClinicsState extends State<NearbyClinics> {
+class _NearbyClinicState extends State<NearbyClinic> {
   final Completer<GoogleMapController> _controller = Completer();
+  bool? _serviceEnabled;
   final Set<Marker> _markers = {};
-  final _location = Location();
-  LocationData? _currentLocation;
+
+  Position? _currentLocation;
   LatLng? currentLatLng;
   late var future;
 
@@ -26,8 +27,8 @@ class _NearbyClinicsState extends State<NearbyClinics> {
 
   Future<LatLng?> _getCurrentLocation() async {
     try {
-      var locationData = await _location.getLocation();
-      _currentLocation = locationData;
+      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      _currentLocation = position;
       currentLatLng =
           LatLng(_currentLocation!.latitude!, _currentLocation!.longitude!);
       await _getNearbyHospitals();
@@ -40,7 +41,7 @@ class _NearbyClinicsState extends State<NearbyClinics> {
 
   Future<void> _getNearbyHospitals() async {
     String url =
-        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${_currentLocation!.latitude},${_currentLocation!.longitude}&radius=2000&type=Clinic&key=AIzaSyAqco1nAu3kgi5xOSS69My79r7EnR1lwFs';
+        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${_currentLocation!.latitude},${_currentLocation!.longitude}&radius=2000&type=Clinics&key=AIzaSyAqco1nAu3kgi5xOSS69My79r7EnR1lwFs';
     var response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);

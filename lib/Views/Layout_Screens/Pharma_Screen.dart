@@ -81,7 +81,7 @@ class _PharmaPageState extends State<PharmaPage> {
                     padding: const EdgeInsets.only(left: 16.0),
                     child: InkWell(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>NearbyClinics()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>NearbyClinic()));
                       },
                       child: Container(
                         padding: const EdgeInsets.all(12),
