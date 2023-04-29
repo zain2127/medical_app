@@ -17,7 +17,7 @@ class _NearbyHospitalsState extends State<NearbyHospitals> {
   bool? _serviceEnabled;
   final Set<Marker> _markers = {};
 
-    Position? _currentLocation;
+  Position? _currentLocation;
   LatLng? currentLatLng;
   late var future;
 
@@ -27,10 +27,11 @@ class _NearbyHospitalsState extends State<NearbyHospitals> {
 
   Future<LatLng?> _getCurrentLocation() async {
     try {
-      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
       _currentLocation = position;
       currentLatLng =
-          LatLng(_currentLocation!.latitude!, _currentLocation!.longitude!);
+          LatLng(_currentLocation!.latitude, _currentLocation!.longitude);
       await _getNearbyHospitals();
       return currentLatLng!;
     } catch (e) {
@@ -94,8 +95,8 @@ class _NearbyHospitalsState extends State<NearbyHospitals> {
                       ? GoogleMap(
                           onMapCreated: _onMapCreated,
                           initialCameraPosition: CameraPosition(
-                            target: LatLng(_currentLocation!.latitude!,
-                                _currentLocation!.longitude!),
+                            target: LatLng(_currentLocation!.latitude,
+                                _currentLocation!.longitude),
                             zoom: 14,
                           ),
                           myLocationEnabled: true,
