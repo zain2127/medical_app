@@ -19,7 +19,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   _buildScreen(){
     return [
       const DoctorScreen(),
-      const SafeArea(child: FitnessScreen()),
+      SafeArea(child: FitnessScreen()),
       PharmaPage(),
       const SafeArea(child: Text('SettingScreen')),
     ];
