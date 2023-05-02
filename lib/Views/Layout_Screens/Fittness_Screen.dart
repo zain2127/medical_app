@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health/health.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class FitnessScreen extends StatefulWidget {
   const FitnessScreen({Key? key}) : super(key: key);
@@ -11,204 +12,141 @@ class FitnessScreen extends StatefulWidget {
 class _FitnessScreenState extends State<FitnessScreen> {
   @override
   String bmi = 'No data';
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
     fetchStepData();
-    _getHealthData();
-    _getHeartRateData();
-    getLatestBMI().then((value){
-      setState(() {
-        bmi=value.toString();
-      });
-    });
-    getTotalSleepTime();
   }
 
   int _getsteps = 0;
   double _totalEnergyBurned = 0.0;
   List<String> _heartRateData = [];
   HealthFactory health = HealthFactory();
-  int sleeptime=0;
+  int sleeptime = 0;
 
-  Future fetchStepData () async
-  {
-    int ? steps;
+  Future fetchStepData() async {
+    int? steps;
 
     var types = [
       HealthDataType.STEPS,
     ];
 
     final now = DateTime.now();
-    final midnight = DateTime(now.year,now.month,now.day);
+    final midnight = now.subtract(const Duration(days: 7));
 
     var Permissions = [
       HealthDataAccess.READ,
     ];
+    await Permission.activityRecognition.request();
+    await Permission.location.request();
+    bool? hasPermissions =
+        await health.hasPermissions(types, permissions: Permissions);
 
-    bool requested = await health.requestAuthorization(types,permissions: Permissions);
+    // hasPermissions = false because the hasPermission cannot disclose if WRITE access exists.
+    // Hence, we have to request with WRITE as well.
+    hasPermissions = false;
 
-    if(requested)
-    {
-      try
-      {
-        steps = await health.getTotalStepsInInterval(midnight, now);
+    if (!hasPermissions) {
+      bool requested =
+          await health.requestAuthorization(types, permissions: Permissions);
 
-      }
-      catch(error){
-        print("get exception in getTotalStepsInInterval $error");
-      }
+      if (requested) {
+        try {
+          steps = await health.getTotalStepsInInterval(midnight, now);
+          await _getHealthData([
+            HealthDataType.ACTIVE_ENERGY_BURNED,
+            HealthDataType.HEART_RATE,
+            HealthDataType.BODY_MASS_INDEX,
+            HealthDataType.SLEEP_ASLEEP
+          ], [
+            HealthDataAccess.READ,
+            HealthDataAccess.READ,
+            HealthDataAccess.READ,
+            HealthDataAccess.READ,
+          ]);
+        } catch (error) {
+          print("get exception in getTotalStepsInInterval $error");
+        }
 
-      setState(() {
-        _getsteps = (steps == null)?0:steps;
-      });
-    }
-    else
-    {
-      print("Autorization not granted");
-    }
-
-  }
-  Future<void> _getHealthData() async {
-    try {
-      var Permissions = [
-        HealthDataAccess.READ,
-      ];
-      var type=[
-        HealthDataType.ACTIVE_ENERGY_BURNED
-      ];
-      bool isAuthorized = await health.requestAuthorization(type,permissions: Permissions);
-      if (!isAuthorized) {
-        return;
-      }
-
-      DateTime endDate = DateTime.now();
-      DateTime startDate = endDate.subtract(const Duration(days: 7));
-      List<HealthDataPoint> healthData = await health.getHealthDataFromTypes(
-          startDate,
-          endDate,
-          type
-      );
-
-      double totalEnergyBurned = 0.0;
-      for (HealthDataPoint dataPoint in healthData) {
-        totalEnergyBurned += double.parse(dataPoint.value.toString());
-      }
-
-      setState(() {
-        _totalEnergyBurned = totalEnergyBurned;
-      });
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-  Future<void> _getHeartRateData() async {
-    var Permissions = [
-      HealthDataAccess.READ,
-    ];
-    var type=[
-      HealthDataType.HEART_RATE
-    ];
-    bool isAuthorized = await health.requestAuthorization(type,permissions: Permissions);
-    if (!isAuthorized) {
-      return;
-    }
-    DateTime endDate = DateTime.now();
-    DateTime startDate = endDate.subtract(const Duration(days: 7));
-
-    List<HealthDataPoint> heartRateData = await health.getHealthDataFromTypes(
-        startDate,
-        endDate,
-        type
-    );
-
-    List<String> heartRateStrings = [];
-
-    for (var dataPoint in heartRateData) {
-      String heartRateString = 'Heart rate: ${dataPoint.value} bpm'; // format heart rate as a string
-      heartRateStrings.add(heartRateString); // add heart rate string to list
-    }
-
-    setState(() {
-      _heartRateData = heartRateStrings;
-    });
-  }
-  Future<double> getLatestBMI() async {
-    // Get the latest body mass index data
-
-    var types = [HealthDataType.BODY_MASS_INDEX];
-    var Permissions = [
-      HealthDataAccess.READ,
-    ];
-    var type=[
-      HealthDataType.BODY_MASS_INDEX
-    ];
-    bool isAuthorized = await health.requestAuthorization(type,permissions: Permissions);
-    if (!isAuthorized) {
-      return 1.0;}
-    List<HealthDataPoint> bodyMassIndexData =
-    await health.getHealthDataFromTypes(
-        DateTime.now(),
-        DateTime.now().subtract(Duration(days: 1)),
-        types
-    );
-
-    // If there is no body mass index data available, return null
-    if (bodyMassIndexData.isEmpty) {
-      return 0.0;
-    }
-
-    // Get the latest body mass index value as a double
-    NumericHealthValue bodyMassIndexValue =
-    bodyMassIndexData[0].value as NumericHealthValue;
-    double bmi = double.parse(bodyMassIndexValue.toString());
-
-    return bmi;
-  }
-  Future<int> getTotalSleepTime() async {
-    // Check if the user has authorized access to sleep data
-    var type=[HealthDataType.SLEEP_ASLEEP];
-    var Permissions = [
-      HealthDataAccess.READ,
-    ];
-    bool isAuthorized = await health.requestAuthorization(type,permissions: Permissions);
-
-    if (!isAuthorized) {
-      // User did not authorize access to sleep data
-      print("error");
-    }
-
-    // Define the start and end times for the query
-    DateTime now = DateTime.now();
-    DateTime startDate = DateTime(now.year, now.month, now.day);
-    DateTime endDate = now;
-
-    // Query the HealthKit database for sleep data
-    List<HealthDataPoint> data = await health.getHealthDataFromTypes(
-        startDate,
-        endDate,
-        type
-    );
-
-    // Calculate the total sleep time
-    int totalSleepTime = 0;
-
-    for (var sleep in data) {
-      HealthDataUnit unit = sleep.unit;
-
-      if (unit == HealthDataUnit.SECOND || unit == HealthDataUnit.MINUTE || unit == HealthDataUnit.HOUR) {
-        NumericHealthValue value = sleep.value as NumericHealthValue;
-        totalSleepTime += int.parse(value.toString());
+        setState(() {
+          _getsteps = (steps == null) ? 0 : steps;
+        });
+      } else {
+        print("Autorization not granted");
       }
     }
-    sleeptime =totalSleepTime;
-
-    // Return the total sleep time in seconds
-    return sleeptime;
   }
 
+  Future<void> _getHealthData(
+      List<HealthDataType> type, List<HealthDataAccess> permissions) async {
+    bool? hasPermissions =
+        await health.hasPermissions(type, permissions: permissions);
+    if (hasPermissions!) {
+      try {
+        bool isAuthorized = await health.requestAuthorization(
+          type,
+        );
+        if (!isAuthorized) {
+          return;
+        }
 
+        DateTime endDate = DateTime.now();
+        DateTime startDate = endDate.subtract(const Duration(days: 7));
+        List<HealthDataPoint> healthData =
+            await health.getHealthDataFromTypes(startDate, endDate, type);
 
+        double totalEnergyBurned = 0.0;
+        for (HealthDataPoint dataPoint in healthData) {
+          if (dataPoint.type == HealthDataType.ACTIVE_ENERGY_BURNED) {
+            totalEnergyBurned += double.parse(dataPoint.value.toString());
+          }
+        }
+        List<String> heartRateStrings = [];
+
+        for (var dataPoint in healthData) {
+          if (dataPoint.type == HealthDataType.HEART_RATE) {
+            String heartRateString =
+                'Heart rate: ${dataPoint.value} bpm'; // format heart rate as a string
+            heartRateStrings
+                .add(heartRateString); // add heart rate string to list
+          }
+        }
+
+        // Get the latest body mass index value as a double
+        NumericHealthValue? bodyMassIndexValue;
+        for (var dataPoint in healthData) {
+          if (dataPoint.type == HealthDataType.BODY_MASS_INDEX) {
+            bodyMassIndexValue = dataPoint.value as NumericHealthValue;
+          }
+        }
+
+        int totalSleepTime = 0;
+
+        for (var sleep in healthData) {
+          if (sleep.type == HealthDataType.SLEEP_ASLEEP) {
+            HealthDataUnit unit = sleep.unit;
+
+            if (unit == HealthDataUnit.SECOND ||
+                unit == HealthDataUnit.MINUTE ||
+                unit == HealthDataUnit.HOUR) {
+              NumericHealthValue value = sleep.value as NumericHealthValue;
+              totalSleepTime += int.parse(value.toString());
+            }
+          }
+        }
+
+        setState(() {
+          _totalEnergyBurned = totalEnergyBurned;
+          _heartRateData = heartRateStrings;
+          sleeptime = totalSleepTime;
+          bmi = bodyMassIndexValue.toString();
+        });
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -218,21 +156,26 @@ class _FitnessScreenState extends State<FitnessScreen> {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children:[
-                Text('Total number of Steps today $_getsteps'),
-                const SizedBox(height: 10,),
-                Text('Total active energy burned: ${_totalEnergyBurned.toDouble()}'),
-                const SizedBox(height: 10,),
-                Text(_heartRateData.join()),
-                SizedBox(height: 10,),
-                Text(
-                  'BMI: $bmi',
-                  style: TextStyle(fontSize: 20),),
-                Text("Total Sleep time "+sleeptime.toInt().toString())
-              ]
-          )
-      ),
+              children: [
+            Text('Total number of Steps today $_getsteps'),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+                'Total active energy burned: ${_totalEnergyBurned.toDouble()}'),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(_heartRateData.join()),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              'BMI: $bmi',
+              style: const TextStyle(fontSize: 20),
+            ),
+            Text("Total Sleep time ${sleeptime.toInt()}")
+          ])),
     );
   }
 }
-
