@@ -14,7 +14,7 @@ class NearbyPharmacy extends StatefulWidget {
 
 class _NearbyPharmacyState extends State<NearbyPharmacy> {
   final Completer<GoogleMapController> _controller = Completer();
-  bool? _serviceEnabled;
+
   final Set<Marker> _markers = {};
 
   Position? _currentLocation;
@@ -41,7 +41,7 @@ class _NearbyPharmacyState extends State<NearbyPharmacy> {
 
   Future<void> _getNearbyHospitals() async {
     String url =
-        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${_currentLocation!.latitude},${_currentLocation!.longitude}&radius=2000&type=pharmacy&key=AIzaSyAqco1nAu3kgi5xOSS69My79r7EnR1lwFs';
+        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${_currentLocation!.latitude!},${_currentLocation!.longitude!}&radius=2000&type=pharmacy&key=AIzaSyAqco1nAu3kgi5xOSS69My79r7EnR1lwFs';
     var response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);
@@ -95,7 +95,7 @@ class _NearbyPharmacyState extends State<NearbyPharmacy> {
             onMapCreated: _onMapCreated,
             initialCameraPosition: CameraPosition(
               target: LatLng(_currentLocation!.latitude!,
-                  _currentLocation!.longitude!),
+                  _currentLocation!.longitude),
               zoom: 14,
             ),
             myLocationEnabled: true,

@@ -31,7 +31,7 @@ class _NearbyHospitalsState extends State<NearbyHospitals> {
           desiredAccuracy: LocationAccuracy.high);
       _currentLocation = position;
       currentLatLng =
-          LatLng(_currentLocation!.latitude, _currentLocation!.longitude);
+          LatLng(_currentLocation!.latitude!, _currentLocation!.longitude!);
       await _getNearbyHospitals();
       return currentLatLng!;
     } catch (e) {

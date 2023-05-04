@@ -36,7 +36,10 @@ class MedicineDetailsScreen extends StatelessWidget {
             SizedBox(
                 height: 250,
                 width: MediaQuery.of(context).size.width,
-                child: Image.network(imageUrl,fit: BoxFit.fill,)),
+                child: Image.network(imageUrl,fit: BoxFit.fill,
+                errorBuilder: (context, error, stackTrace) => Image.asset("lib/images/Image_not_available.png"),
+
+                )),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(

@@ -14,7 +14,6 @@ class NearbyClinic extends StatefulWidget {
 
 class _NearbyClinicState extends State<NearbyClinic> {
   final Completer<GoogleMapController> _controller = Completer();
-  bool? _serviceEnabled;
   final Set<Marker> _markers = {};
 
   Position? _currentLocation;
@@ -30,7 +29,7 @@ class _NearbyClinicState extends State<NearbyClinic> {
       Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
       _currentLocation = position;
       currentLatLng =
-          LatLng(_currentLocation!.latitude!, _currentLocation!.longitude!);
+          LatLng(_currentLocation!.latitude, _currentLocation!.longitude);
       await _getNearbyHospitals();
       return currentLatLng!;
     } catch (e) {
@@ -41,7 +40,7 @@ class _NearbyClinicState extends State<NearbyClinic> {
 
   Future<void> _getNearbyHospitals() async {
     String url =
-        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${_currentLocation!.latitude},${_currentLocation!.longitude}&radius=2000&type=Clinics&key=AIzaSyAqco1nAu3kgi5xOSS69My79r7EnR1lwFs';
+        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${_currentLocation!.latitude},${_currentLocation!.longitude}&radius=2000&type=hospitals&key=AIzaSyAqco1nAu3kgi5xOSS69My79r7EnR1lwFs';
     var response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);
