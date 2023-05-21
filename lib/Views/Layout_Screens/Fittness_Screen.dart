@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:health/health.dart';
 import 'package:medical_app/Utils/Vitals_Card.dart';
+import 'package:medical_app/Views/Layout_Screens/Exercises_Screen.dart';
+import 'package:medical_app/Views/Layout_Screens/exercise_main.dart';
 
 class FitnessScreen extends StatefulWidget {
   @override
@@ -87,14 +89,19 @@ class _FitnessScreenState extends State<FitnessScreen> {
                         const SizedBox(height: 8,),
                         const Text('Want to explore the exercises',style: TextStyle(fontSize: 14,color: Colors.white),),
                         const SizedBox(height: 14,),
-                        Container(
-                          padding: const EdgeInsets.all(12.0),
-                          decoration: BoxDecoration(color: Colors.black87,
-                              borderRadius: BorderRadius.circular(12.0)
-                          ),
-                          child: const Center(child:
-                          Text('Get Started',style: TextStyle(color: Colors.white,
-                              fontWeight: FontWeight.bold),),),)
+                        InkWell(
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Exercise_Dashboard()));
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(12.0),
+                            decoration: BoxDecoration(color: Colors.black87,
+                                borderRadius: BorderRadius.circular(12.0)
+                            ),
+                            child: const Center(child:
+                            Text('Get Started',style: TextStyle(color: Colors.white,
+                                fontWeight: FontWeight.bold),),),),
+                        )
                       ],
                     ),
                   )
