@@ -29,7 +29,8 @@ class _Biceps_ScreenState extends State<Biceps_Screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Biceps Exercises"),),
+      appBar: AppBar(title: Text("Biceps Exercises"),
+        backgroundColor: Colors.green[300],),
       body: FutureBuilder(
         future: getbicepdata(),
     builder: (BuildContext context,snapshot) {
@@ -41,65 +42,67 @@ class _Biceps_ScreenState extends State<Biceps_Screen> {
         return Center(child: Text('Error: ${snapshot.error}'));
       }
       else {
-        return ListView.builder(
-            itemCount: data.length,
-            itemBuilder: (context,index){
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 8,),
-                Center(child: Text("Exercise ${index+1}",style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),)),
-                Text(
-                  'Name :',
-                  style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold ),
-                ),
-                Text(
-                  '${data[index]['name']}',
-                  style: TextStyle(fontSize: 18, ),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  'Type :',
-                  style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  '${data[index]['type']}',
-                  style: TextStyle(fontSize: 18, ),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  'Muscle :',
-                  style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  '${data[index]['muscle']}',
-                  style: TextStyle(fontSize: 18, ),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  'Difficulty :',
-                  style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  '${data[index]['difficulty']}',
-                  style: TextStyle(fontSize: 18, ),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  'Instructions :',
-                  style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  '${data[index]['instructions']}',
-                  style: TextStyle(fontSize: 18, ),
-                ),
+        return Scrollbar(
+          child: ListView.builder(
+              itemCount: data.length,
+              itemBuilder: (context,index){
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 8,),
+                  Center(child: Text("Exercise ${index+1}",style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold,color: Colors.green[400]),)),
+                  Text(
+                    'Name :',
+                    style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold ,color: Colors.green[400]),
+                  ),
+                  Text(
+                    '${data[index]['name']}',
+                    style: TextStyle(fontSize: 18, ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Type :',
+                    style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.green[400]),
+                  ),
+                  Text(
+                    '${data[index]['type']}',
+                    style: TextStyle(fontSize: 18, ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Muscle :',
+                    style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.green[400]),
+                  ),
+                  Text(
+                    '${data[index]['muscle']}',
+                    style: TextStyle(fontSize: 18, ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Difficulty :',
+                    style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.green[400]),
+                  ),
+                  Text(
+                    '${data[index]['difficulty']}',
+                    style: TextStyle(fontSize: 18, ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Instructions :',
+                    style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.green[400]),
+                  ),
+                  Text(
+                    '${data[index]['instructions']}',
+                    style: TextStyle(fontSize: 18, ),
+                  ),
 
-              ],
-            ),
-          );
-        });
+                ],
+              ),
+            );
+          }),
+        );
       }
     }
     )

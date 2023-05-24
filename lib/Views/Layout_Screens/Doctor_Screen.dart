@@ -17,7 +17,7 @@ class DoctorScreen extends StatefulWidget {
 
 class _DoctorScreenState extends State<DoctorScreen> {
   Future getDataFromApi() async {
-    const String baseUrl = 'https://medi-production-d2ce.up.railway.app/doctor/';
+    const String baseUrl = 'http://127.0.0.1:8000/doctor/';
 
     final response = await http.get(Uri.parse(baseUrl));
 
@@ -45,16 +45,15 @@ class _DoctorScreenState extends State<DoctorScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
                       Text(
-                        'Hello',
+                        'Welcome to',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
+                          fontSize: 24.0,
                         ),
                       ),
-                      SizedBox(height: 8.0,),
                       Text(
-                        'Doctor Name',
-                        style: TextStyle(fontSize: 24.0),
+                        'Doctor Screen',
+                        style: TextStyle(fontSize: 24.0,fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),

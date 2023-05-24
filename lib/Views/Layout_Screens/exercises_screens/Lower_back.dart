@@ -3,16 +3,16 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class Chest_Screen extends StatefulWidget {
-  const Chest_Screen({Key? key}) : super(key: key);
+class Lowerback_Screen extends StatefulWidget {
+  const Lowerback_Screen({Key? key}) : super(key: key);
 
   @override
-  State<Chest_Screen> createState() => _Chest_ScreenState();
+  State<Lowerback_Screen> createState() => _Lowerback_ScreenState();
 }
 
-class _Chest_ScreenState extends State<Chest_Screen> {
+class _Lowerback_ScreenState extends State<Lowerback_Screen> {
   Future getbicepdata() async {
-    const String baseUrl = 'https://api.api-ninjas.com/v1/exercises?muscle=chest';
+    const String baseUrl = 'https://api.api-ninjas.com/v1/exercises?muscle=lower_back';
 
     final response = await http.get(Uri.parse(baseUrl),
         headers:{
@@ -29,7 +29,7 @@ class _Chest_ScreenState extends State<Chest_Screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Chest Exercises"),
+        appBar: AppBar(title: Text("Lowerback Exercises"),
           backgroundColor: Colors.green[300],),
         body: FutureBuilder(
             future: getbicepdata(),
@@ -55,7 +55,7 @@ class _Chest_ScreenState extends State<Chest_Screen> {
                               Center(child: Text("Exercise ${index+1}",style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold,color: Colors.green[400]),)),
                               Text(
                                 'Name :',
-                                style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.green[400] ),
+                                style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold ,color: Colors.green[400]),
                               ),
                               Text(
                                 '${data[index]['name']}',

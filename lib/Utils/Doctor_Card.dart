@@ -24,7 +24,11 @@ class DoctorCard extends StatelessWidget {
             //pic of doctor
             ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: Image.network(DoctorImagepath,height: 120,)),
+                child: Image.network(
+                  DoctorImagepath,height: 120,
+                  errorBuilder: (context, error, stackTrace) =>
+                      Image.asset("lib/images/Image_not_available.png"),
+                )),
             const SizedBox(height: 10,),
             //rating out of 5
             Row(

@@ -3,16 +3,16 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class Chest_Screen extends StatefulWidget {
-  const Chest_Screen({Key? key}) : super(key: key);
+class Calves_Screen extends StatefulWidget {
+  const Calves_Screen({Key? key}) : super(key: key);
 
   @override
-  State<Chest_Screen> createState() => _Chest_ScreenState();
+  State<Calves_Screen> createState() => _Calves_ScreenState();
 }
 
-class _Chest_ScreenState extends State<Chest_Screen> {
+class _Calves_ScreenState extends State<Calves_Screen> {
   Future getbicepdata() async {
-    const String baseUrl = 'https://api.api-ninjas.com/v1/exercises?muscle=chest';
+    const String baseUrl = 'https://api.api-ninjas.com/v1/exercises?muscle=calves';
 
     final response = await http.get(Uri.parse(baseUrl),
         headers:{
@@ -29,7 +29,7 @@ class _Chest_ScreenState extends State<Chest_Screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Chest Exercises"),
+        appBar: AppBar(title: Text("Calves Exercises"),
           backgroundColor: Colors.green[300],),
         body: FutureBuilder(
             future: getbicepdata(),

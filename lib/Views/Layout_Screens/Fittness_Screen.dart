@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:health/health.dart';
 import 'package:medical_app/Utils/Vitals_Card.dart';
-import 'package:medical_app/Views/Layout_Screens/Exercises_Screen.dart';
 import 'package:medical_app/Views/Layout_Screens/exercise_main.dart';
 
 class FitnessScreen extends StatefulWidget {
