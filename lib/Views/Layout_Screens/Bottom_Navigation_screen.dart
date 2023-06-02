@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medical_app/Views/Layout_Screens/Fittness_Screen.dart';
 import 'package:medical_app/Views/Layout_Screens/Pharma_Screen.dart';
+import 'package:medical_app/Views/Layout_Screens/Settings_Screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'Doctor_Screen.dart';
@@ -21,7 +22,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
       const DoctorScreen(),
       SafeArea(child: FitnessScreen()),
       PharmaPage(),
-      const SafeArea(child: Text('SettingScreen')),
+      Setting_Screen()
     ];
   }
   _navbarItems()
