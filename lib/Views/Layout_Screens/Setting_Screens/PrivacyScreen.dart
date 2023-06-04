@@ -48,10 +48,17 @@ class _Privacy_ScreenState extends State<Privacy_Screen> {
               ],
             ),
             SizedBox(height: 20,),
+            auth.currentUser!.email == null ? Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Phone Number:",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
+                Text(auth.currentUser!.phoneNumber.toString(),style: TextStyle(fontSize: 16),)
+              ],
+            ):
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Email:",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
+                Text("email:",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
                 Text(auth.currentUser!.email.toString(),style: TextStyle(fontSize: 16),)
               ],
             ),

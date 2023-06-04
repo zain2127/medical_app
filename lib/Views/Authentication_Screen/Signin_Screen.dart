@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:medical_app/Views/Authentication_Screen/Signin_with_phoneNo.dart';
 import 'package:medical_app/Views/Authentication_Screen/Signup_Screen.dart';
 import 'package:medical_app/Views/Layout_Screens/Bottom_Navigation_screen.dart';
 
@@ -134,16 +135,21 @@ class _SignInScreenState extends State<SignInScreen> {
             const SizedBox(height: 20,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children:  [
                 CircleAvatar(
                   radius: 30,
                   child: Icon(
                     FontAwesomeIcons.google, size: 30, color: Colors.red,),
                 ),
                 SizedBox(width: 12,),
-                CircleAvatar(
-                  radius: 30,
-                  child: Icon(FontAwesomeIcons.phone, size: 30,),
+                InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Login_with_phoneNumber()));
+                  },
+                  child: CircleAvatar(
+                    radius: 30,
+                    child: Icon(FontAwesomeIcons.phone, size: 30,),
+                  ),
                 )
               ],
             ),
