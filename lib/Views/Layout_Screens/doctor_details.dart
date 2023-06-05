@@ -6,12 +6,13 @@ class DoctorDetails extends StatelessWidget {
   final String education;
   final String speciality;
   final int rating;
+  final String email;
     const DoctorDetails({
       Key? key, required this.name,
       required this.image,
       required this.education,
       required this.speciality,
-      required this.rating}) : super(key: key);
+      required this.rating, required this.email}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +107,26 @@ class DoctorDetails extends StatelessWidget {
               ],
             ),
           ),
+          const Padding(
+            padding:  EdgeInsets.symmetric(horizontal: 10),
+            child:  Text("Doctor's Email",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.blueAccent ),),
+          ),
+          SizedBox(height: 8,),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Row(
+              children: [
+                Icon(Icons.mail_outline,color: Colors.blue,),
+                SizedBox(width: 10,),
+                Text(
+                  email,
+                  style: const TextStyle(fontSize: 16.0),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 8,),
+
           const Padding(
             padding:  EdgeInsets.symmetric(horizontal: 10),
             child:  Text("Doctor's Bio",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.blueAccent ),),

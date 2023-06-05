@@ -73,6 +73,7 @@ class _DoctorListState extends State<DoctorList> {
                                         image: data["doctor"][index]["image"],
                                         rating: data["doctor"][index]["rating"],
                                         education: data["doctor"][index]["education"],
+                                        email: data["doctor"][index]["email"],
                                       )));
                                 });
                               },
