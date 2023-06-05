@@ -40,7 +40,7 @@ class _FitnessScreenState extends State<FitnessScreen> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    final double itemHeight = (size.height - kToolbarHeight - 24) / 4.5;
+    final double itemHeight = (size.height - kToolbarHeight - 24) / 4.45;
     final double itemWidth = size.width /1.2;
     return Scaffold(
       body: Column(

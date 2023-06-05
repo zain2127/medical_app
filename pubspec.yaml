@@ -45,6 +45,7 @@ dependencies:
   permission_handler: ^10.2.0
   google_maps_flutter: ^2.2.5
   geolocator: ^9.0.2
+  youtube_player_flutter: ^8.1.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

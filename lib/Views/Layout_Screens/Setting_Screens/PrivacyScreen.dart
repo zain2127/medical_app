@@ -48,11 +48,17 @@ class _Privacy_ScreenState extends State<Privacy_Screen> {
               ],
             ),
             SizedBox(height: 20,),
-            auth.currentUser!.email == null ? Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            auth.currentUser!.email == null ? Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Phone Number:",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
-                Text(auth.currentUser!.phoneNumber.toString(),style: TextStyle(fontSize: 16),)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Phone Number:",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
+                    Text(auth.currentUser!.phoneNumber.toString(),style: TextStyle(fontSize: 16),)
+                  ],
+                ),
               ],
             ):
             Row(
@@ -64,47 +70,47 @@ class _Privacy_ScreenState extends State<Privacy_Screen> {
             ),
             SizedBox(height: 8,),
             OutlinedButton(onPressed: (){
-              showDialog(context: context, builder: (context)
-                  {
-                    return Container(
-                      child: AlertDialog(
-                        title: Column(
-                          children: [
-                            Text("Update Password",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
-                            SizedBox(height: 6,),
-                            Form(
-                              key: formKey,
-                              child: TextFormField(
-                                controller: updatepassword,
-                                decoration: InputDecoration(hintText: "Enter new password"),
-                                validator: (value){
-                                  if(value!.isEmpty)
-                                    {
-                                      return "enter new password";
-                                    }
-                                },
-                              ),
-                            ),
-
-                          ],
-                        ),
-                        actions: [
-                          TextButton(onPressed: (){
-                            if(formKey.currentState!.validate())
+              auth.currentUser!.email == null ? null : showDialog(context: context, builder: (context)
+              {
+                return Container(
+                  child: AlertDialog(
+                    title: Column(
+                      children: [
+                        Text("Update Password",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
+                        SizedBox(height: 6,),
+                        Form(
+                          key: formKey,
+                          child: TextFormField(
+                            controller: updatepassword,
+                            decoration: InputDecoration(hintText: "Enter new password"),
+                            validator: (value){
+                              if(value!.isEmpty)
                               {
-                                updatePassword();
-                                Navigator.pop(context);
+                                return "enter new password";
                               }
-                          }, child: Text('Update')),
-                          TextButton(onPressed: (){
-                            Navigator.pop(context);
-                          }, child: Text('Cancel')),
+                            },
+                          ),
+                        ),
 
-                        ],
+                      ],
+                    ),
+                    actions: [
+                      TextButton(onPressed: (){
+                        if(formKey.currentState!.validate())
+                        {
+                          updatePassword();
+                          Navigator.pop(context);
+                        }
+                      }, child: Text('Update')),
+                      TextButton(onPressed: (){
+                        Navigator.pop(context);
+                      }, child: Text('Cancel')),
 
-                      ),
-                    );
-                  }
+                    ],
+
+                  ),
+                );
+              }
               );
             }, child: Text("Change Password"))
           ],

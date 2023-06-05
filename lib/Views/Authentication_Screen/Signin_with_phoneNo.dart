@@ -27,7 +27,7 @@ class _Login_with_phoneNumberState extends State<Login_with_phoneNumber> {
               keyboardType: TextInputType.phone,
               decoration: const InputDecoration(
                 hintText: '+1 234 3456 789',
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
               ),
             ),
             const SizedBox(height: 30,),

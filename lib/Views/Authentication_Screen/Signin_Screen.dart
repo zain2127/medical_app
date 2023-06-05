@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:medical_app/Views/Authentication_Screen/Forgot_Password_Screen.dart';
 import 'package:medical_app/Views/Authentication_Screen/Signin_with_phoneNo.dart';
 import 'package:medical_app/Views/Authentication_Screen/Signup_Screen.dart';
 import 'package:medical_app/Views/Layout_Screens/Bottom_Navigation_screen.dart';
@@ -67,7 +68,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     TextFormField(
                       controller: emailController,
                       decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
                         hintText: 'Email', prefixIcon: Icon(FontAwesomeIcons.envelope)
                       ),
                       keyboardType: TextInputType.emailAddress,
@@ -83,7 +84,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     TextFormField(
                       controller: passwordController,
                       decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
                         hintText: 'Password',
                           prefixIcon: Icon(FontAwesomeIcons.lock)
 
@@ -123,34 +124,47 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
             ),
             const SizedBox(height: 5,),
-            const Padding(
+             Padding(
               padding: EdgeInsets.only(right: 8),
               child: Align(
                   alignment: Alignment.bottomRight,
-                  child: Text('Forgot Password?',
-                    style: TextStyle(decoration: TextDecoration.underline,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold),)),
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgotPasswordScreen()));
+                    },
+                    child: Text('Forgot Password?',
+                      style: TextStyle(decoration: TextDecoration.underline,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold),),
+                  )),
             ),
             const SizedBox(height: 20,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children:  [
-                CircleAvatar(
-                  radius: 30,
-                  child: Icon(
-                    FontAwesomeIcons.google, size: 30, color: Colors.red,),
-                ),
                 SizedBox(width: 12,),
-                InkWell(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Login_with_phoneNumber()));
-                  },
-                  child: CircleAvatar(
-                    radius: 30,
-                    child: Icon(FontAwesomeIcons.phone, size: 30,),
-                  ),
-                )
+                 Container(
+                   width: MediaQuery.of(context).size.width/1.2,
+                   child: ClipRRect(
+                     borderRadius: BorderRadius.circular(8),
+                     child: OutlinedButton(
+                       style: OutlinedButton.styleFrom(side: BorderSide(width: 2.0,color: Colors.blue)),
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Login_with_phoneNumber()));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Icon(FontAwesomeIcons.phone, size: 30,),
+                            Text("Sign in with Phone Number")
+                          ],
+                        ),
+                      ),
+                ),
+                   ),
+                 )
               ],
             ),
             const SizedBox(height: 40,),

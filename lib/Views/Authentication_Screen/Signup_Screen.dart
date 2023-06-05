@@ -65,7 +65,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     TextFormField(
                       controller: emailController,
                       decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
                           hintText: 'Email', prefixIcon: Icon(FontAwesomeIcons.envelope)
                       ),
                       keyboardType: TextInputType.emailAddress,
@@ -81,7 +81,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     TextFormField(
                       controller: passwordController,
                       decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
                           hintText: 'Password',
                           prefixIcon: Icon(FontAwesomeIcons.lock)
 
@@ -114,7 +114,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     color: Colors.blue.shade400
                 ),
                 child: const Center(
-                    child: Text('Login',
+                    child: Text('Sign up',
                       style: TextStyle(color: Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),)),
@@ -130,7 +130,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 InkWell(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => const SignupScreen()));
+                          builder: (context) => const SignInScreen()));
                     },
                     child: const Text('Login',
                         style: TextStyle(decoration: TextDecoration.underline,

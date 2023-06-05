@@ -28,6 +28,7 @@ class _Verify_with_phoneNumberState extends State<Verify_with_phoneNumber> {
               controller: code_controller,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
+                border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
                 hintText: '+Enter code',
               ),
             ),
