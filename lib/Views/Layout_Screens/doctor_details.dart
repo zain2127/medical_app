@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:medical_app/Utils/utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DoctorDetails extends StatelessWidget {
   final String name;
@@ -107,9 +109,9 @@ class DoctorDetails extends StatelessWidget {
               ],
             ),
           ),
-          const Padding(
-            padding:  EdgeInsets.symmetric(horizontal: 10),
-            child:  Text("Doctor's Email",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.blueAccent ),),
+           Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child:  const  Text("Doctor's Email",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.blueAccent ),),
           ),
           SizedBox(height: 8,),
           Padding(
@@ -118,9 +120,42 @@ class DoctorDetails extends StatelessWidget {
               children: [
                 Icon(Icons.mail_outline,color: Colors.blue,),
                 SizedBox(width: 10,),
-                Text(
-                  email,
-                  style: const TextStyle(fontSize: 16.0),
+                InkWell(
+                  onTap: ()async{
+                    String? encodeQueryParameters(Map<String, String> params) {
+                      return params.entries
+                          .map((MapEntry<String, String> e) =>
+                      '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+                          .join('&');
+                    }
+
+                    final Uri emaillauncher = Uri(
+                      scheme: 'mailto',
+                      path: email.toString(),
+                      query: encodeQueryParameters(<String, String>{
+                        'subject': 'Contacting for appointment',
+                      }),
+                    );
+                    if(await canLaunchUrl(emaillauncher))
+                    {
+                      launchUrl(emaillauncher);
+                    }
+                    else{
+                      throw Exception('Couldn not launch $emaillauncher');
+                    }
+
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                      color: Colors.blue[100],
+                    ),
+                    child: Text(
+                      email,
+                      style: const TextStyle(fontSize: 16.0),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -134,24 +169,22 @@ class DoctorDetails extends StatelessWidget {
           const SizedBox(height: 10,),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Flexible(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.blue[100],
-                  borderRadius: BorderRadius.circular(20)
-                ),
-                child:  Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Text("$name is a skilled and experienced $speciality with a focus on minimally invasive techniques."
-                        " He has done $education and completed his residency at Johns Hopkins Hospital. "
-                        "$name is known for his exceptional patient care, attention to detail, and commitment to providing personalized "
-                        "treatment plans. He is a member of several professional organizations, including the  College of $speciality "
-                        "and the Society of $speciality."
-                        " $name expertise and dedication have earned him a reputation as a top $speciality in his field.",
-                    style: const TextStyle(fontSize: 15.5,letterSpacing: 1),
-                    ),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.blue[100],
+                borderRadius: BorderRadius.circular(20)
+              ),
+              child:  Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Text("$name is a skilled and experienced $speciality with a focus on minimally invasive techniques."
+                      " He has done $education and completed his residency at Johns Hopkins Hospital. "
+                      "$name is known for his exceptional patient care, attention to detail, and commitment to providing personalized "
+                      "treatment plans. He is a member of several professional organizations, including the  College of $speciality "
+                      "and the Society of $speciality."
+                      " $name expertise and dedication have earned him a reputation as a top $speciality in his field.",
+                  style: const TextStyle(fontSize: 15.5,letterSpacing: 1),
                   ),
                 ),
               ),

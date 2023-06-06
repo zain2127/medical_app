@@ -52,9 +52,9 @@ class _Chest_ScreenState extends State<Chest_Screen> {
                           // Place your video ID here
                           flags: YoutubePlayerFlags(
                             autoPlay: false,
-                            mute: true,
+                            mute: false,
                             isLive: false,
-                            showLiveFullscreenButton: true,
+                            showLiveFullscreenButton: false,
                             hideControls: false,
                             controlsVisibleAtStart: true,
 

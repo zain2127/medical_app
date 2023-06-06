@@ -18,7 +18,7 @@ class PharmaPage extends StatefulWidget {
 
 class _PharmaPageState extends State<PharmaPage> {
   Future getDataFromApi() async {
-    const String baseUrl = 'http://127.0.0.1:8000/medicine/';
+    const String baseUrl = 'https://medicalapp121.azurewebsites.net/medicine/';
 
     final response = await http.get(Uri.parse(baseUrl));
 

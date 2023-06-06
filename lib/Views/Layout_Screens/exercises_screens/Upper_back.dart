@@ -51,10 +51,10 @@ class _Upperback_ScreenState extends State<Upperback_Screen> {
                           // Place your video ID here
                           flags: YoutubePlayerFlags(
                             autoPlay: false,
-                            mute: true,
+                            mute: false,
                             isLive: false,
-                            showLiveFullscreenButton: true,
                             hideControls: false,
+                            showLiveFullscreenButton: false,
                             controlsVisibleAtStart: true,
 
                           ),

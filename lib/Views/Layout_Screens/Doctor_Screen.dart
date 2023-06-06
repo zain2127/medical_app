@@ -17,7 +17,7 @@ class DoctorScreen extends StatefulWidget {
 
 class _DoctorScreenState extends State<DoctorScreen> {
   Future getDataFromApi() async {
-    const String baseUrl = 'http://127.0.0.1:8000/doctor/';
+    const String baseUrl = 'https://medicalapp121.azurewebsites.net/doctor/';
 
     final response = await http.get(Uri.parse(baseUrl));
 
