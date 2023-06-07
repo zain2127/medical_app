@@ -32,44 +32,44 @@ class _Biceps_ScreenState extends State<Biceps_Screen> {
     return Scaffold(
       appBar: AppBar(title: Text("Biceps Exercises"),
         backgroundColor: Colors.green[300],),
-      body: FutureBuilder(
-        future: getbicepdata(),
-    builder: (BuildContext context,snapshot) {
-      final data = snapshot.data;
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Center(child: CircularProgressIndicator());
-      }
-      else if (snapshot.hasError) {
-        return Center(child: Text('Error: ${snapshot.error}'));
-      }
-      else {
-        return Scrollbar(
-          child: Column(
-            children: [
-
-              Container(
-                child: YoutubePlayer(
-                  controller: YoutubePlayerController(
-                    initialVideoId: 'tRBNcifAaxg',
-                    // Place your video ID here
-                    flags: YoutubePlayerFlags(
-                      autoPlay: false,
-                      mute: false,
-                      isLive: false,
-                      showLiveFullscreenButton: false,
-                      hideControls: false,
-                      controlsVisibleAtStart: true,
-
-                    ),
-
-                  ),
-                  showVideoProgressIndicator: true,
-                  progressIndicatorColor: Colors.green,
-                  progressColors: ProgressBarColors(backgroundColor: Colors.green),
+      body: Column(
+        children: [
+          Flexible(
+            child: YoutubePlayer(
+              controller: YoutubePlayerController(
+                initialVideoId: 'tRBNcifAaxg',
+                // Place your video ID here
+                flags: YoutubePlayerFlags(
+                  autoPlay: false,
+                  mute: false,
+                  isLive: false,
+                  showLiveFullscreenButton: false,
+                  hideControls: false,
+                  controlsVisibleAtStart: true,
 
                 ),
+
               ),
-              Expanded(
+              showVideoProgressIndicator: true,
+              progressIndicatorColor: Colors.green,
+              progressColors: ProgressBarColors(backgroundColor: Colors.green),
+
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: FutureBuilder(
+              future: getbicepdata(),
+    builder: (BuildContext context,snapshot) {
+            final data = snapshot.data;
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
+            else {
+              return Scrollbar(
                 child: ListView.builder(
                     itemCount: data.length,
                     itemBuilder: (context,index){
@@ -129,13 +129,13 @@ class _Biceps_ScreenState extends State<Biceps_Screen> {
                     ),
                   );
                 }),
-              ),
-            ],
-          ),
-        );
-      }
+              );
+            }
     }
-    )
+    ),
+          ),
+        ],
+      )
     );
   }
 }

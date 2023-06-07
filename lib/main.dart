@@ -3,18 +3,25 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_app/Views/Authentication_Screen/Signin_Screen.dart';
 import 'package:medical_app/Views/Layout_Screens/Bottom_Navigation_screen.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+
 
 bool isLoggedIn = false;
 Future main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   FirebaseAuth.instance.authStateChanges().listen((user) {
     if (user != null) {
       isLoggedIn = true;
       runApp(const MyApp());
+      FlutterNativeSplash.remove();
+
     } else {
       isLoggedIn = false;
       runApp(const MyApp());
+      FlutterNativeSplash.remove();
+
     }
   });
 }

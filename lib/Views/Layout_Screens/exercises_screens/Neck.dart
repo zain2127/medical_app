@@ -32,43 +32,46 @@ class _Neck_ScreenState extends State<Neck_Screen> {
     return Scaffold(
         appBar: AppBar(title: Text("Neck Exercises"),
           backgroundColor: Colors.green[300],),
-        body: FutureBuilder(
-            future: getbicepdata(),
-            builder: (BuildContext context,snapshot) {
-              final data = snapshot.data;
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              }
-              else {
-                return Column(
-                  children: [
-                    Container(
-                      child: YoutubePlayer(
-                        controller: YoutubePlayerController(
-                          initialVideoId: 'qd4x6zJOk_k',
-                          // Place your video ID here
-                          flags: YoutubePlayerFlags(
-                            autoPlay: false,
-                            mute: false,
-                            isLive: false,
-                            showLiveFullscreenButton: false,
-                            hideControls: false,
-                            controlsVisibleAtStart: true,
+        body: Column(
+          children: [
+            Expanded(
+              child: Container(
+                child: YoutubePlayer(
+                  controller: YoutubePlayerController(
+                    initialVideoId: 'qd4x6zJOk_k',
+                    // Place your video ID here
+                    flags: YoutubePlayerFlags(
+                      autoPlay: false,
+                      mute: false,
+                      isLive: false,
+                      showLiveFullscreenButton: false,
+                      hideControls: false,
+                      controlsVisibleAtStart: true,
 
-                          ),
-
-                        ),
-                        showVideoProgressIndicator: true,
-                        progressIndicatorColor: Colors.green,
-                        progressColors: ProgressBarColors(backgroundColor: Colors.green),
-
-                      ),
                     ),
-                    Expanded(
-                      child: ListView.builder(
+
+                  ),
+                  showVideoProgressIndicator: true,
+                  progressIndicatorColor: Colors.green,
+                  progressColors: ProgressBarColors(backgroundColor: Colors.green),
+
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: FutureBuilder(
+                  future: getbicepdata(),
+                  builder: (BuildContext context,snapshot) {
+                    final data = snapshot.data;
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    }
+                    else {
+                      return ListView.builder(
                           itemCount: data.length,
                           itemBuilder: (context,index){
                             return Padding(
@@ -126,12 +129,12 @@ class _Neck_ScreenState extends State<Neck_Screen> {
                                 ],
                               ),
                             );
-                          }),
-                    ),
-                  ],
-                );
-              }
-            }
+                          });
+                    }
+                  }
+              ),
+            ),
+          ],
         )
     );
   }

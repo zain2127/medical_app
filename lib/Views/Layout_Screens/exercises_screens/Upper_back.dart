@@ -31,43 +31,46 @@ class _Upperback_ScreenState extends State<Upperback_Screen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text("Upperback Exercises"),backgroundColor: Colors.green[300],),
-        body: FutureBuilder(
-            future: getbicepdata(),
-            builder: (BuildContext context,snapshot) {
-              final data = snapshot.data;
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              }
-              else {
-                return Column(
-                  children: [
-                    Container(
-                      child: YoutubePlayer(
-                        controller: YoutubePlayerController(
-                          initialVideoId: 'zgfcOWuTeYA',
-                          // Place your video ID here
-                          flags: YoutubePlayerFlags(
-                            autoPlay: false,
-                            mute: false,
-                            isLive: false,
-                            hideControls: false,
-                            showLiveFullscreenButton: false,
-                            controlsVisibleAtStart: true,
+        body: Column(
+          children: [
+            Expanded(
+              child: Container(
+                child: YoutubePlayer(
+                  controller: YoutubePlayerController(
+                    initialVideoId: 'zgfcOWuTeYA',
+                    // Place your video ID here
+                    flags: YoutubePlayerFlags(
+                      autoPlay: false,
+                      mute: false,
+                      isLive: false,
+                      hideControls: false,
+                      showLiveFullscreenButton: false,
+                      controlsVisibleAtStart: true,
 
-                          ),
-
-                        ),
-                        showVideoProgressIndicator: true,
-                        progressIndicatorColor: Colors.green,
-                        progressColors: ProgressBarColors(backgroundColor: Colors.green),
-
-                      ),
                     ),
-                    Expanded(
-                      child: ListView.builder(
+
+                  ),
+                  showVideoProgressIndicator: true,
+                  progressIndicatorColor: Colors.green,
+                  progressColors: ProgressBarColors(backgroundColor: Colors.green),
+
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: FutureBuilder(
+                  future: getbicepdata(),
+                  builder: (BuildContext context,snapshot) {
+                    final data = snapshot.data;
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    }
+                    else {
+                      return ListView.builder(
                           itemCount: data.length,
                           itemBuilder: (context,index){
                             return Padding(
@@ -125,12 +128,12 @@ class _Upperback_ScreenState extends State<Upperback_Screen> {
                                 ],
                               ),
                             );
-                          }),
-                    ),
-                  ],
-                );
-              }
-            }
+                          });
+                    }
+                  }
+              ),
+            ),
+          ],
         )
     );
   }

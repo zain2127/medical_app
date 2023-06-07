@@ -27,113 +27,121 @@ class _Abdominal_ScreenState extends State<Abdominal_Screen> {
       throw Exception('Failed to load data');
     }
   }
+
   @override
   Widget build(BuildContext context) {
+    final myFuture=getbicepdata();
     return Scaffold(
         appBar: AppBar(
           title: Text("Abdominal Exercises",),
           backgroundColor: Colors.green[300],
         ),
-        body: FutureBuilder(
-            future: getbicepdata(),
-            builder: (BuildContext context,snapshot) {
-              final data = snapshot.data;
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              }
-              else {
-                return Column(
-                  children: [
-                    Container(
-                      child: YoutubePlayer(
-                        controller: YoutubePlayerController(
-                          initialVideoId: '9p7-YC91Q74',
-                          // Place your video ID here
-                          flags: YoutubePlayerFlags(
-                            autoPlay: false,
-                            mute: false,
-                            isLive: false,
-                            showLiveFullscreenButton: false,
-                            hideControls: false,
-                            controlsVisibleAtStart: true,
+        body: Column(
+          children: [
+            Expanded(
+              child: Container(
+                child: YoutubePlayer(
+                  controller: YoutubePlayerController(
+                    initialVideoId: '9p7-YC91Q74',
+                    // Place your video ID here
+                    flags: YoutubePlayerFlags(
+                      autoPlay: false,
+                      mute: false,
+                      isLive: false,
+                      showLiveFullscreenButton: true,
+                      hideControls: false,
+                      controlsVisibleAtStart: true,
 
-                          ),
-
-                        ),
-                        showVideoProgressIndicator: true,
-                        progressIndicatorColor: Colors.green,
-                        progressColors: ProgressBarColors(backgroundColor: Colors.green),
-
-                      ),
                     ),
-                    Expanded(
-                      child: ListView.builder(
-                          itemCount: data.length,
-                          itemBuilder: (context,index){
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 12),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 8,),
-                                  Center(child: Text("Exercise ${index+1}",style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold,color: Colors.green[400]),)),
-                                  Text(
-                                    'Name :',
-                                    style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold ),
-                                  ),
-                                  Text(
-                                    '${data[index]['name']}',
-                                    style: TextStyle(fontSize: 18, ),
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    'Type :',
-                                    style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.green[400]),
-                                  ),
-                                  Text(
-                                    '${data[index]['type']}',
-                                    style: TextStyle(fontSize: 18, ),
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    'Muscle :',
-                                    style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.green[400]),
-                                  ),
-                                  Text(
-                                    '${data[index]['muscle']}',
-                                    style: TextStyle(fontSize: 18, ),
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    'Difficulty :',
-                                    style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.green[400]),
-                                  ),
-                                  Text(
-                                    '${data[index]['difficulty']}',
-                                    style: TextStyle(fontSize: 18, ),
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    'Instructions :',
-                                    style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.green[400]),
-                                  ),
-                                  Text(
-                                    '${data[index]['instructions']}',
-                                    style: TextStyle(fontSize: 18, ),
-                                  ),
 
-                                ],
-                              ),
-                            );
-                          }),
-                    ),
-                  ],
-                );
-              }
-            }
+                  ),
+                  showVideoProgressIndicator: true,
+                  progressIndicatorColor: Colors.green,
+                  progressColors: ProgressBarColors(backgroundColor: Colors.green),
+
+                ),
+              ),
+            ),
+            Expanded(
+              child: FutureBuilder(
+                  future:myFuture,
+                  builder: (BuildContext context,snapshot) {
+                    final data = snapshot.data;
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    }
+                    else {
+                      return Column(
+                        children: [
+                          ListView.builder(
+                              itemCount: data.length,
+                              itemBuilder: (context,index){
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(height: 8,),
+                                      Center(child: Text("Exercise ${index+1}",style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold,color: Colors.green[400]),)),
+                                      Text(
+                                        'Name :',
+                                        style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold ),
+                                      ),
+                                      Text(
+                                        '${data[index]['name']}',
+                                        style: TextStyle(fontSize: 18, ),
+                                      ),
+                                      SizedBox(height: 8),
+                                      Text(
+                                        'Type :',
+                                        style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.green[400]),
+                                      ),
+                                      Text(
+                                        '${data[index]['type']}',
+                                        style: TextStyle(fontSize: 18, ),
+                                      ),
+                                      SizedBox(height: 8),
+                                      Text(
+                                        'Muscle :',
+                                        style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.green[400]),
+                                      ),
+                                      Text(
+                                        '${data[index]['muscle']}',
+                                        style: TextStyle(fontSize: 18, ),
+                                      ),
+                                      SizedBox(height: 8),
+                                      Text(
+                                        'Difficulty :',
+                                        style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.green[400]),
+                                      ),
+                                      Text(
+                                        '${data[index]['difficulty']}',
+                                        style: TextStyle(fontSize: 18, ),
+                                      ),
+                                      SizedBox(height: 8),
+                                      Text(
+                                        'Instructions :',
+                                        style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.green[400]),
+                                      ),
+                                      Text(
+                                        '${data[index]['instructions']}',
+                                        style: TextStyle(fontSize: 18, ),
+                                      ),
+
+                                    ],
+                                  ),
+                                );
+                              }),
+                        ],
+                      );
+                    }
+                  }
+              ),
+            ),
+          ],
         )
     );
   }
