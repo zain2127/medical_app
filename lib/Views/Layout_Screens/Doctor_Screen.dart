@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:medical_app/Utils/Category_Card.dart';
 import 'package:medical_app/Utils/Doctor_Card.dart';
 import 'package:http/http.dart' as http;
+import 'package:medical_app/Views/Layout_Screens/Doctor_Category_Screens/Dentist.dart';
+import 'package:medical_app/Views/Layout_Screens/Doctor_Category_Screens/OtherDoctors.dart';
+import 'package:medical_app/Views/Layout_Screens/Doctor_Category_Screens/Surgeon.dart';
 import 'package:medical_app/Views/Layout_Screens/Doctor_List%20page.dart';
 
 import 'doctor_details.dart';
@@ -122,9 +125,21 @@ class _DoctorScreenState extends State<DoctorScreen> {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
-                  CategoryCard(Icon: 'lib/icons/tooth.png',categoryname: 'Dentist'),
-                  CategoryCard(Icon: 'lib/icons/surgeon.png',categoryname: 'Surgeon'),
-                  CategoryCard(Icon: 'lib/icons/drugs.png',categoryname: 'Drugs'),
+                  InkWell(
+                      onTap:(){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>DentistScreen()));
+                      },
+                      child: CategoryCard(Icon: 'lib/icons/tooth.png',categoryname: 'Dentist')),
+                  InkWell(
+                      onTap:(){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>SurgeonScreen()));
+                      },
+                      child: CategoryCard(Icon: 'lib/icons/surgeon.png',categoryname: 'Surgeon')),
+                  InkWell(
+                      onTap:(){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>OtherDoctorScreen()));
+                      },
+                      child: CategoryCard(Icon: 'lib/icons/drugs.png',categoryname: 'Others')),
                 ],
               ),
             ),
