@@ -14,6 +14,7 @@ class Verify_with_phoneNumber extends StatefulWidget {
 
 class _Verify_with_phoneNumberState extends State<Verify_with_phoneNumber> {
   TextEditingController code_controller = TextEditingController();
+  bool loading = false;
   final auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {

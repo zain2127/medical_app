@@ -10,6 +10,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final TextEditingController _emailController = TextEditingController();
+  bool loading = false;
 
   Future<void> resetPassword(String email) async {
     try {
