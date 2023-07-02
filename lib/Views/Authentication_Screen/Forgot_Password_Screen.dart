@@ -14,13 +14,25 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   Future<void> resetPassword(String email) async {
     try {
+      setState(() {
+        loading = true;
+      });
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email).then((value){
+        setState(() {
+          loading = false;
+        });
         Utils().successMessage("Email sent , Please check your email to reset your password");
         Navigator.push(context, MaterialPageRoute(builder: (context)=>SignInScreen()));
       }).onError((error, stackTrace) {
+        setState(() {
+          loading = false;
+        });
         Utils().errorMessage(error.toString());
       });
     } catch (error) {
+      setState(() {
+        loading = false;
+      });
       Utils().errorMessage(error.toString());
     }
   }
@@ -58,7 +70,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: _handleResetPassword,
-              child: Text('Reset Password'),
+              child: Center(child: loading == true ? CircularProgressIndicator(strokeWidth: 3, color: Colors.white,) :Text('Reset Password')),
             ),
           ],
         ),

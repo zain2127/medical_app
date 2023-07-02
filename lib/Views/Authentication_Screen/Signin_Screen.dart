@@ -116,8 +116,8 @@ class _SignInScreenState extends State<SignInScreen> {
                     borderRadius: BorderRadius.circular(50),
                     color: Colors.blue.shade400
                 ),
-                child: const Center(
-                    child: Text('Login',
+                child:  Center(
+                    child:  loading == true ? CircularProgressIndicator(strokeWidth: 3, color: Colors.white,) :Text('Login',
                       style: TextStyle(color: Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),)),
@@ -179,7 +179,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       Navigator.push(context, MaterialPageRoute(
                           builder: (context) => const SignupScreen()));
                     },
-                    child: const Text('Signup',
+                    child:const Text('Signup',
                         style: TextStyle(decoration: TextDecoration.underline,
                             fontWeight: FontWeight.bold,
                             fontSize: 16))),

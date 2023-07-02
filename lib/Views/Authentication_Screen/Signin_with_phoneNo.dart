@@ -34,17 +34,29 @@ class _Login_with_phoneNumberState extends State<Login_with_phoneNumber> {
             const SizedBox(height: 30,),
             InkWell(
               onTap: (){
+                setState(() {
+                  loading = true;
+                });
                 auth.verifyPhoneNumber(
                     phoneNumber: phone_controller.text,
                     verificationCompleted: (_){},
                     verificationFailed: (e){
+                      setState(() {
+                        loading = false;
+                      });
                       Utils().errorMessage(e.toString());
                     },
                     codeSent: (String verificationId , int ? token){
+                      setState(() {
+                        loading = false;
+                      });
                       Utils().successMessage('code sent');
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>Verify_with_phoneNumber(VerificationId: verificationId,)));
                     },
                     codeAutoRetrievalTimeout: (e){
+                      setState(() {
+                        loading = false;
+                      });
                       Utils().errorMessage(e.toString());
                     }, );
               },
@@ -54,8 +66,8 @@ class _Login_with_phoneNumberState extends State<Login_with_phoneNumber> {
                     borderRadius: BorderRadius.circular(50),
                     color: Colors.blue.shade400
                 ),
-                child: const Center(
-                    child: Text('Login',
+                child:  Center(
+                    child: loading == true ? CircularProgressIndicator(strokeWidth: 3, color: Colors.white,) :Text('Login',
                       style: TextStyle(color: Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),)),

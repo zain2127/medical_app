@@ -113,8 +113,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     borderRadius: BorderRadius.circular(50),
                     color: Colors.blue.shade400
                 ),
-                child: const Center(
-                    child: Text('Sign up',
+                child:  Center(
+                    child:  loading == true ? CircularProgressIndicator(strokeWidth: 3, color: Colors.white,) :Text('Sign up',
                       style: TextStyle(color: Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),)),
@@ -125,7 +125,7 @@ class _SignupScreenState extends State<SignupScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  "Don't have an account?", style: TextStyle(fontSize: 16),),
+                  "Already have an account?", style: TextStyle(fontSize: 16),),
                 const SizedBox(width: 4.0,),
                 InkWell(
                     onTap: () {

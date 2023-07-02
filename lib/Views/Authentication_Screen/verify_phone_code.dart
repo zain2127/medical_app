@@ -30,20 +30,29 @@ class _Verify_with_phoneNumberState extends State<Verify_with_phoneNumber> {
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
-                hintText: '+Enter code',
+                hintText: 'Enter code',
               ),
             ),
             SizedBox(height: 30,),
             InkWell(
               onTap: ()async{
+                setState(() {
+                  loading = true;
+                });
                 final credentials = PhoneAuthProvider.credential(verificationId: widget.VerificationId, smsCode: code_controller.text.toString());
                 try{
+                  setState(() {
+                    loading = false;
+                  });
                   auth.signInWithCredential(credentials);
                   Utils().successMessage("Login Successful");
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>BottomNavigationScreen()));
                 }
                 catch(e)
                 {
+                  setState(() {
+                    loading = false;
+                  });
                   Utils().errorMessage(e.toString());
                 }
               },
@@ -53,8 +62,8 @@ class _Verify_with_phoneNumberState extends State<Verify_with_phoneNumber> {
                     borderRadius: BorderRadius.circular(50),
                     color: Colors.blue.shade400
                 ),
-                child: const Center(
-                    child: Text('Verify',
+                child:  Center(
+                    child: loading == true ? CircularProgressIndicator(strokeWidth: 3, color: Colors.white,) :Text('Verify',
                       style: TextStyle(color: Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),)),
