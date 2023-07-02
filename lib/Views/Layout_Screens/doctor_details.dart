@@ -166,25 +166,26 @@ class DoctorDetails extends StatelessWidget {
             padding:  EdgeInsets.symmetric(horizontal: 10),
             child:  Text("Doctor's Bio",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Colors.blueAccent ),),
           ),
-          const SizedBox(height: 10,),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.blue[100],
-                borderRadius: BorderRadius.circular(20)
-              ),
-              child:  Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Text("$name is a skilled and experienced $speciality with a focus on minimally invasive techniques."
-                      " He has done $education and completed his residency at Johns Hopkins Hospital. "
-                      "$name is known for his exceptional patient care, attention to detail, and commitment to providing personalized "
-                      "treatment plans. He is a member of several professional organizations, including the  College of $speciality "
-                      "and the Society of $speciality."
-                      " $name expertise and dedication have earned him a reputation as a top $speciality in his field.",
-                  style: const TextStyle(fontSize: 15.5,letterSpacing: 1),
+          const SizedBox(height: 8,),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.blue[100],
+                  borderRadius: BorderRadius.circular(20)
+                ),
+                child:  Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: SingleChildScrollView(
+                    child: Text("$name is a skilled and experienced $speciality with a focus on minimally invasive techniques."
+                        " He has done $education and completed his residency at Johns Hopkins Hospital. "
+                        "$name is known for his exceptional patient care, attention to detail, and commitment to providing personalized "
+                        "treatment plans. He is a member of several professional organizations, including the  College of $speciality "
+                        "and the Society of $speciality."
+                        " $name expertise and dedication have earned him a reputation as a top $speciality in his field.",
+                    style: const TextStyle(fontSize: 15.5,letterSpacing: 1),
+                    ),
                   ),
                 ),
               ),
