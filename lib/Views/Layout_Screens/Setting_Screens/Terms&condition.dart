@@ -51,20 +51,6 @@ class TermsAndConditionsScreen extends StatelessWidget {
             ),
         SizedBox(height: 16.0),
         Text(
-          '2. User Responsibilities',
-          style: TextStyle(
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Text(
-          'a. You are solely responsible for the decisions and actions you take based on the information provided in the App. The App\'s content does not replace the need for professional medical advice or judgement.',
-        ),
-        Text(
-          'b. If you experience any health-related issues or emergencies, seek immediate medical attention from a qualified healthcare professional or call emergency services.',
-        ),
-        SizedBox(height: 16.0),
-        Text(
           '3. Privacy and Data Security',
           style: TextStyle(
             fontSize: 18.0,
