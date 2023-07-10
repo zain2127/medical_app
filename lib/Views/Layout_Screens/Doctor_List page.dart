@@ -16,7 +16,7 @@ class _DoctorListState extends State<DoctorList> {
 
 
   Future getDataFromApi() async {
-    const String baseUrl = 'https://medicalapp121.azurewebsites.net/doctor/';
+    const String baseUrl = 'https://medicalapp111.azurewebsites.net/doctor/';
 
     final response = await http.get(Uri.parse(baseUrl));
 
