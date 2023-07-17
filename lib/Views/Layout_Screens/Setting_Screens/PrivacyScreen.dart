@@ -15,6 +15,7 @@ class Privacy_Screen extends StatefulWidget {
 class _Privacy_ScreenState extends State<Privacy_Screen> {
   final auth = FirebaseAuth.instance;
   TextEditingController ?  updatepassword = TextEditingController();
+  TextEditingController ? updaterepassword = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   updatePassword()
@@ -30,6 +31,7 @@ class _Privacy_ScreenState extends State<Privacy_Screen> {
     // TODO: implement dispose
     super.dispose();
     updatepassword!.dispose();
+    updaterepassword!.dispose();
   }
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,15 +82,33 @@ class _Privacy_ScreenState extends State<Privacy_Screen> {
                         SizedBox(height: 6,),
                         Form(
                           key: formKey,
-                          child: TextFormField(
-                            controller: updatepassword,
-                            decoration: InputDecoration(hintText: "Enter new password"),
-                            validator: (value){
-                              if(value!.isEmpty)
-                              {
-                                return "enter new password";
-                              }
-                            },
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                controller: updatepassword,
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                    hintText: "Enter new password",
+                                ),
+                                validator: (value){
+                                  if(value!.isEmpty)
+                                  {
+                                    return "enter new password";
+                                  }
+                                },
+                              ),
+                              TextFormField(
+                                controller: updaterepassword,
+                                obscureText: true,
+                                decoration: InputDecoration(hintText: "Re-enter new password"),
+                                validator: (value){
+                                  if(value!.isEmpty)
+                                  {
+                                    return "Re-enter new password";
+                                  }
+                                },
+                              ),
+                            ],
                           ),
                         ),
 
@@ -98,11 +118,20 @@ class _Privacy_ScreenState extends State<Privacy_Screen> {
                       TextButton(onPressed: (){
                         if(formKey.currentState!.validate())
                         {
-                          updatePassword();
-                          Navigator.pop(context);
+                          if(updatepassword!.text == updaterepassword!.text)
+                            {
+                              updatePassword();
+                              Navigator.pop(context);
+                            }
+                          else
+                            {
+                              Utils().errorMessage("Password does not match");
+                            }
                         }
                       }, child: Text('Update')),
                       TextButton(onPressed: (){
+                        updatepassword!.clear();
+                        updaterepassword!.clear();
                         Navigator.pop(context);
                       }, child: Text('Cancel')),
 
