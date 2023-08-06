@@ -27,7 +27,7 @@ class VitalCard extends StatelessWidget {
                 Text(Vitalname,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),)
               ],
             ),
-            SizedBox(height: 10,),
+            SizedBox(height: 8,),
             Align(
                 alignment: Alignment.bottomRight,
                 child: Text(vitals,style: TextStyle(fontSize: 16),)),
