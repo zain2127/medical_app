@@ -27,6 +27,8 @@ class _NearbyHospitalsState extends State<NearbyHospitals> {
 
   Future<LatLng?> _getCurrentLocation() async {
     try {
+      await Geolocator.checkPermission();
+      await Geolocator.requestPermission();
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
       _currentLocation = position;

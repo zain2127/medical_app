@@ -27,6 +27,8 @@ class _NearbyPharmacyState extends State<NearbyPharmacy> {
 
   Future<LatLng?> _getCurrentLocation() async {
     try {
+      await Geolocator.checkPermission();
+      await Geolocator.requestPermission();
       Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
       _currentLocation = position;
       currentLatLng =
